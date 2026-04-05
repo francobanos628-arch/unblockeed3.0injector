@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inject Unblocker</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: #1a1a2e;
+      border: 1px solid #7f5af0;
+      border-radius: 16px;
+      padding: 40px 50px;
+      text-align: center;
+      width: 360px;
+      box-shadow: 0 0 30px rgba(127,90,240,0.3);
+    }
+    h1 {
+      font-size: 1.6rem;
+      color: #7f5af0;
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+    }
+    button {
+      background: #7f5af0;
+      color: white;
+      border: none;
+      padding: 12px 40px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #6b46e0; }
+    button:disabled { background: #444; cursor: not-allowed; }
+
+    .bar-container {
+      display: none;
+      margin-top: 24px;
+      background: #111;
+      border-radius: 8px;
+      height: 14px;
+      overflow: hidden;
+      border: 1px solid #333;
+    }
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #7f5af0, #2cb67d);
+      transition: width 0.1s linear;
+      border-radius: 8px;
+    }
+    .status {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: #aaa;
+      min-height: 20px;
+    }
+    .success {
+      color: #2cb67d;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Inject Unblocker</h1>
+    <button id="injectBtn" onclick="startInject()">Inject</button>
+    <div class="bar-container" id="barContainer">
+      <div class="bar" id="bar"></div>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    function startInject() {
+      const btn = document.getElementById('injectBtn');
+      const barContainer = document.getElementById('barContainer');
+      const bar = document.getElementById('bar');
+      const status = document.getElementById('status');
+
+      btn.disabled = true;
+      barContainer.style.display = 'block';
+      status.textContent = 'Injecting...';
+      status.className = 'status';
+
+      let progress = 0;
+      const messages = [
+        [20, 'Loading modules...'],
+        [50, 'Bypassing checks...'],
+        [75, 'Applying patches...'],
+        [90, 'Finalizing...'],
+      ];
+
+      const interval = setInterval(() => {
+        progress += 1;
+        bar.style.width = progress + '%';
+
+        const msg = messages.find(m => m[0] === progress);
+        if (msg) status.textContent = msg[1];
+
+        if (progress >= 100) {
+          clearInterval(interval);
+          status.innerHTML = '✅ Injected Successfully Injected!';
+          status.className = 'status success';
+          btn.textContent = 'Injected';
+        }
+      }, 30);
+    }
+  </script>
+</body>
+</html>
